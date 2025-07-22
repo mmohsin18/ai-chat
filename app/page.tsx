@@ -59,7 +59,7 @@ export default function HomePage() {
   return (
     <div className="max-w-2xl mx-auto mt-20 p-6 border rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">
-        🎓 Ask the AI about your surrounding events
+        🎓 Ask the AI 
       </h1>
       <div className="mb-4 max-h-96 overflow-y-auto flex flex-col gap-2">
         {chats.map((chat, idx) => (
