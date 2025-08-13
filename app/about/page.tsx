@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { motion, type Variants } from "framer-motion";
 import { Footer } from "@/components/Layout/Footer";
 import Logo from "@/components/Logo";
+import Link from "next/link";
 
 const appear: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
@@ -171,12 +172,12 @@ export default function AboutPage() {
               We obsess over the little things—kernels of motion, letter-spacing, the exact opacity of a glow.
               If you care about first impressions, you’ll feel at home with Darviz.
             </p>
-            <a
-              href="/"
+            <Link
+              href="https://gatekeepr.live"
               className="mt-1 inline-flex items-center rounded-md border border-white/10 bg-white text-black px-4 py-2 text-sm font-medium transition active:translate-y-px"
             >
               Go to Home
-            </a>
+            </Link>
           </motion.div>
         </section>
 

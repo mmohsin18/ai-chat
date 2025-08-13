@@ -10,7 +10,7 @@ export async function getAIResponse(message: string, context: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "deepseek/deepseek-r1-0528:free",
+      model: "openai/gpt-oss-20b:free",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message },
