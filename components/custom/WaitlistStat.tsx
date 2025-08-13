@@ -17,27 +17,11 @@ function formatCount(n: number) {
 
 /** Three fallback SVG avatars as data URIs (no external files needed). */
 const FALLBACKS = [
-  "data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>\
-<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>\
-<stop stop-color='%230099ff'/><stop offset='1' stop-color='%2366e1ff'/>\
-</linearGradient></defs><rect width='64' height='64' rx='32' fill='url(%23g)'/>\
-</svg>",
-  "data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>\
-<defs><linearGradient id='g' x1='0' y1='1' x2='1' y2='0'>\
-<stop stop-color='%23ffffff' stop-opacity='0.9'/>\
-<stop offset='1' stop-color='%23888888' stop-opacity='0.6'/>\
-</linearGradient></defs><rect width='64' height='64' rx='32' fill='url(%23g)'/>\
-</svg>",
-  "data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>\
-<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>\
-<stop stop-color='%2300ffaa'/>\
-<stop offset='1' stop-color='%23006644'/>\
-</linearGradient></defs><rect width='64' height='64' rx='32' fill='url(%23g)'/>\
-</svg>",
-];
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%230099ff'/><stop offset='1' stop-color='%2366e1ff'/></linearGradient></defs><rect width='64' height='64' rx='32' fill='url(%23g)'/></svg>",
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><defs><linearGradient id='g' x1='0' y1='1' x2='1' y2='0'><stop stop-color='%23ffffff' stop-opacity='0.9'/><stop offset='1' stop-color='%23888888' stop-opacity='0.6'/></linearGradient></defs><rect width='64' height='64' rx='32' fill='url(%23g)'/></svg>",
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%2300ffaa'/><stop offset='1' stop-color='%23006644'/></linearGradient></defs><rect width='64' height='64' rx='32' fill='url(%23g)'/></svg>",
+] as const;
+
 
 export default function WaitlistStat({
   count,
@@ -47,7 +31,7 @@ export default function WaitlistStat({
   const imgs = avatars?.length ? avatars.slice(0, 3) : FALLBACKS;
 
   // Props are read-only — compute a local safe value and clamp at 0
-  const safeCount = Math.max(0, count ?? 200);
+  const safeCount = Math.max(0, count ?? 0);
 
   return (
     <div className="w-full items-center flex justify-center">
@@ -64,6 +48,8 @@ export default function WaitlistStat({
             <Image
               key={i}
               src={src}
+              width={100}
+              height={100}
               alt={`Waitlist avatar ${i + 1}`}
               className="h-4 w-4 rounded-full object-cover ring-1 ring-white/20"
               loading="lazy"

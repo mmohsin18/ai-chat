@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import Logo from "@/components/Logo";
-import { Footer } from "@/components/Layout/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "convex/react";
@@ -12,6 +11,7 @@ import WaitlistStat from "@/components/custom/WaitlistStat";
 import { useWaitlist } from "@/hooks/useWaitlist";
 import { toast } from "sonner";
 import axios from "axios";
+import FXBackground from "@/components/Layout/FXBackground";
 
 const appear: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
@@ -32,7 +32,7 @@ export default function Page() {
       <FXBackground />
 
       {/* Content container */}
-      <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col px-6 md:px-10">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-6 md:px-10">
         {/* Hero */}
         <section className="z-10 flex flex-1 items-center pt-16 pb-16 md:pt-20">
           <div className="w-full">
@@ -94,8 +94,6 @@ export default function Page() {
             </motion.div>
           </div>
         </section>
-
-        <Footer />
       </div>
     </main>
   );
@@ -109,27 +107,40 @@ async function sendEmail(email: string) {
 
 function EmailCapture() {
   const [email, setEmail] = useState("");
+  const [refCode, setRefCode] = useState<string | undefined>(undefined);
   const waitlist = useWaitlist();
+
+  // Read ?ref=... from the URL on the client
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ref =
+        new URLSearchParams(window.location.search).get("ref") || undefined;
+      setRefCode(ref);
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setEmail((e.currentTarget.email as HTMLInputElement).value);
-    const reference =
-      (e.currentTarget.reference as HTMLInputElement)?.value || undefined;
-    await waitlist(email, reference);
+
+    const form = e.currentTarget;
+    const emailValue = (form.email as HTMLInputElement).value.trim();
+
+    setEmail(emailValue);
+
+    // Call waitlist with or without reference based on presence
+    if (refCode) {
+      await waitlist(emailValue, refCode);
+    } else {
+      await waitlist(emailValue);
+    }
 
     setEmail("");
-    sendEmail(email);
+    sendEmail(emailValue);
     toast.success("You are added to waitlist");
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        handleSubmit(e);
-      }}
-      className="relative flex items-stretch"
-    >
+    <form onSubmit={handleSubmit} className="relative flex items-stretch">
       <Input
         type="email"
         required
@@ -139,7 +150,6 @@ function EmailCapture() {
         placeholder="Your Email Address"
         className="peer h-12 w-full bg-transparent rounded-md border focus:bg-transparent border-white/10 px-4 pr-32 text-sm text-white placeholder-white/40 outline-none ring-0 transition focus:border-white/20"
       />
-
       <Button
         type="submit"
         className="absolute right-1 top-1 h-10 rounded bg-neutral-100 px-4 text-sm font-medium text-black transition hover:text-white active:translate-y-px"
@@ -147,109 +157,5 @@ function EmailCapture() {
         Get Notified
       </Button>
     </form>
-  );
-}
-
-/** Background FX: gradients + soft particles canvas */
-function FXBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let raf = 0;
-    const DPR = Math.min(window.devicePixelRatio || 1, 2);
-
-    const resize = () => {
-      canvas.width = Math.floor(window.innerWidth * DPR);
-      canvas.height = Math.floor(window.innerHeight * DPR);
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const particles = Array.from({ length: 60 }).map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: 0.6 + Math.random() * 1.8,
-      vx: -0.2 + Math.random() * 0.4,
-      vy: -0.2 + Math.random() * 0.4,
-      a: 0.05 + Math.random() * 0.15,
-    }));
-
-    const tick = () => {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // soft glow
-      const g1 = ctx.createRadialGradient(
-        canvas.width * 0.25,
-        canvas.height * 0.25,
-        0,
-        canvas.width * 0.25,
-        canvas.height * 0.25,
-        canvas.width * 0.7
-      );
-      g1.addColorStop(0, "rgba(0,153,255,0.12)");
-      g1.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = g1;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const g2 = ctx.createRadialGradient(
-        canvas.width * 0.75,
-        canvas.height * 0.65,
-        0,
-        canvas.width * 0.75,
-        canvas.height * 0.65,
-        canvas.width * 0.6
-      );
-      g2.addColorStop(0, "rgba(255,255,255,0.06)");
-      g2.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = g2;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // particles
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * DPR, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.a})`;
-        ctx.fill();
-      }
-
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return (
-    <>
-      {/* subtle radial */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_10%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.4)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.06),rgba(255,255,255,0)_30%)]" />
-      </div>
-
-      {/* particles */}
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none absolute inset-0"
-      />
-
-      {/* left/right fade masks */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[rgb(10,10,10)] to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[rgb(10,10,10)] to-transparent" />
-    </>
   );
 }

@@ -1,8 +1,9 @@
+import Link from "next/link";
 import React from "react";
 
 function Logo() {
   return (
-    <div>
+    <Link href={'/'}>
       <svg
         width="16"
         height="31"
@@ -37,7 +38,7 @@ function Logo() {
           fill="white"
         />
       </svg>
-    </div>
+    </Link>
   );
 }
 
