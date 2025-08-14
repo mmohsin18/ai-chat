@@ -159,7 +159,6 @@ function GradientCanvas() {
   );
 }
 
-
 /* ---------- Particles canvas (soft stars) ---------- */
 function ParticlesCanvas() {
   const ref = React.useRef<HTMLCanvasElement | null>(null);

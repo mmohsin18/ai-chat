@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Logo from "@/components/Logo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { useWaitlist } from "@/hooks/useWaitlist";
 import { toast } from "sonner";
 import axios from "axios";
 import FXBackground from "@/components/Layout/FXBackground";
+import { ChatCard } from "@/components/custom/whywebuild/ChatBox";
 
 const appear: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
@@ -23,8 +24,26 @@ const appear: Variants = {
   }),
 };
 
+const delayStep = 0.08;
+const computeStagger = (i: number) => i * delayStep; // tiny helper we can test
+const variants: Variants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 200,
+      damping: 30,
+      delay: computeStagger(i),
+    },
+  }),
+};
+
 export default function Page() {
   const emails = useQuery(api.waitlist.get);
+  const prefersReduced = useReducedMotion();
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[rgb(10,10,10)] text-white">
@@ -34,7 +53,7 @@ export default function Page() {
       {/* Content container */}
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-6 md:px-10">
         {/* Hero */}
-        <section className="z-10 flex flex-1 items-center pt-16 pb-16 md:pt-20">
+        <section id="waitlist" className="z-10 flex flex-1 items-center pt-16 pb-16 md:pt-20">
           <div className="w-full">
             {/* Frosted pill */}
             <motion.div
@@ -92,6 +111,47 @@ export default function Page() {
               <WaitlistStat className="mb-3" count={emails?.length} />
               <EmailCapture />
             </motion.div>
+          </div>
+        </section>
+        <section className="py-4">
+          <div className="text-center">
+            <motion.h1
+              className="mx-auto max-w-3xl font-semibold tracking-tight text-white"
+              style={{
+                letterSpacing: "-0.05em",
+                lineHeight: 1.1,
+                fontSize: "clamp(42px, 6vw, 60px)",
+              }}
+              initial="hidden"
+              animate="show"
+              custom={0}
+              variants={variants}
+            >
+              <span>Why</span> <span>we’re</span> <span>building</span>{" "}
+              {/* Accent serif via CSS var fallback (no runtime font function) */}
+              <span
+                className="italic"
+                style={{ fontFamily: `var(--font-instrument, Georgia, serif)` }}
+              >
+                Darviz
+              </span>
+            </motion.h1>
+            <motion.p
+              className="mx-auto mt-4 max-w-2xl text-base text-white/60"
+              style={{ letterSpacing: "-0.04em", lineHeight: 1.5 }}
+              initial="hidden"
+              animate="show"
+              custom={1}
+              variants={variants}
+            >
+              Darviz helps you generate leads, build excitement, and grow your
+              audience before launch day— with tasteful motion and a
+              creator-first toolkit.
+            </motion.p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-[1fr]">
+            <ChatCard/>
           </div>
         </section>
       </div>
@@ -159,3 +219,25 @@ function EmailCapture() {
     </form>
   );
 }
+
+// function Bubble({
+//   role,
+//   children,
+// }: {
+//   role: "user" | "assistant";
+//   children: React.ReactNode;
+// }) {
+//   const user = role === "user";
+//   return (
+//     <div
+//       className={
+//         "max-w-[85%] rounded-[1.25rem] border backdrop-blur-md px-4 py-3 text-sm " +
+//         (user
+//           ? "bg-[rgba(255,255,255,0.10)] border-white/15 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06)_inset]"
+//           : "bg-[rgba(255,255,255,0.06)] border-white/10 text-white/90")
+//       }
+//     >
+//       {children}
+//     </div>
+//   );
+// }
