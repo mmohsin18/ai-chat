@@ -53,7 +53,10 @@ export default function Page() {
       {/* Content container */}
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-6 md:px-10">
         {/* Hero */}
-        <section id="waitlist" className="z-10 flex flex-1 items-center pt-16 pb-16 md:pt-20">
+        <section
+          id="waitlist"
+          className="z-10 flex flex-1 h-screen items-center pt-16 pb-16 md:pt-20"
+        >
           <div className="w-full">
             {/* Frosted pill */}
             <motion.div
@@ -96,8 +99,8 @@ export default function Page() {
               animate="show"
               className="mx-auto mt-4 max-w-3xl text-center text-base leading-relaxed tracking-[-0.04em] text-white/60"
             >
-              Generate leads, build excitement, and grow your email list ahead
-              of launch day.
+              Explore new possibilities with your companion to experience better
+              moments ahead of launch day.
             </motion.p>
 
             {/* Email form */}
@@ -144,14 +147,13 @@ export default function Page() {
               custom={1}
               variants={variants}
             >
-              Darviz helps you generate leads, build excitement, and grow your
-              audience before launch day— with tasteful motion and a
-              creator-first toolkit.
+              Darviz helps you discover exciting events near you and plan your
+              day around experiences that truly matter.
             </motion.p>
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-[1fr]">
-            <ChatCard/>
+            <ChatCard />
           </div>
         </section>
       </div>
