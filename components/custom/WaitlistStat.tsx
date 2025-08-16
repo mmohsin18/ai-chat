@@ -59,8 +59,8 @@ export default function WaitlistStat({
 
         {/* Count text */}
         <span className="text-xs font-medium tracking-[-0.02em] text-white/90">
-          {formatCount(safeCount)}{" "}
-          <span className="text-white/70">people have joined the waitlist</span>
+          {/* {formatCount(safeCount)}{" "} */}
+          <span className="text-white/70">Join the waitlist and be among the first</span>
         </span>
       </div>
     </div>

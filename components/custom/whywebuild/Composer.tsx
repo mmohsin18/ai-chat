@@ -17,7 +17,7 @@ export function Composer() {
         onSubmit={(e) => handleSubmit(e)}
       >
         <Input
-          placeholder="Write a message…"
+          placeholder="Write a message…" disabled
           className="h-12 flex-1 border-0 bg-transparent text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0"
         />
         <Button

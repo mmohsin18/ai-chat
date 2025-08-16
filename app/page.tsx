@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import FXBackground from "@/components/Layout/FXBackground";
 import { ChatCard } from "@/components/custom/whywebuild/ChatBox";
+import { Separator } from "@radix-ui/react-separator";
 
 const appear: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
@@ -67,7 +68,7 @@ export default function Page() {
               className="mx-auto mb-6 flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/10 px-4 py-2 backdrop-blur-md"
             >
               <span className="text-sm font-medium text-neutral-100">
-                Darviz
+                Darviz AI
               </span>
               <Logo />
               <span className="text-sm font-medium text-neutral-100/90">
@@ -116,6 +117,7 @@ export default function Page() {
             </motion.div>
           </div>
         </section>
+        <div className="border-b w-full border-white/10 mb-10"></div>
         <section className="py-4">
           <div className="text-center">
             <motion.h1
@@ -136,7 +138,7 @@ export default function Page() {
                 className="italic"
                 style={{ fontFamily: `var(--font-instrument, Georgia, serif)` }}
               >
-                Darviz
+                Darviz AI
               </span>
             </motion.h1>
             <motion.p
