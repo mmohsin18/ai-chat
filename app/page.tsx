@@ -13,7 +13,6 @@ import { toast } from "sonner";
 import axios from "axios";
 import FXBackground from "@/components/Layout/FXBackground";
 import { ChatCard } from "@/components/custom/whywebuild/ChatBox";
-import { Separator } from "@radix-ui/react-separator";
 
 const appear: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
