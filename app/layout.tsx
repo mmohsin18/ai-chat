@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/Layout/Footer";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,22 +27,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="1442dd42-4103-4470-a40f-05ed5a742c45"
-        ></script>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
-      >
-        <ConvexClientProvider>{children}</ConvexClientProvider>
-        <Toaster />
-        {/* Footer */}
-        <Footer />
-      </body>
-    </html>
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en">
+        <head>
+          <script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id="1442dd42-4103-4470-a40f-05ed5a742c45"
+          ></script>
+        </head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
+        >
+          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <Toaster />
+          {/* Footer */}
+          <Footer />
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
   );
 }

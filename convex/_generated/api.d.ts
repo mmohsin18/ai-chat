@@ -13,6 +13,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as auth from "../auth.js";
+import type * as files from "../files.js";
+import type * as http from "../http.js";
+import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
 import type * as waitlisting from "../waitlisting.js";
 
@@ -25,6 +29,10 @@ import type * as waitlisting from "../waitlisting.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
+  files: typeof files;
+  http: typeof http;
+  users: typeof users;
   waitlist: typeof waitlist;
   waitlisting: typeof waitlisting;
 }>;

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Logo from "@/components/Logo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,9 +10,9 @@ import { api } from "@/convex/_generated/api";
 import WaitlistStat from "@/components/custom/WaitlistStat";
 import { useWaitlist } from "@/hooks/useWaitlist";
 import { toast } from "sonner";
-import axios from "axios";
 import FXBackground from "@/components/Layout/FXBackground";
 import { ChatCard } from "@/components/custom/whywebuild/ChatBox";
+import { sendEmail } from "@/hooks/sendEmail";
 
 const appear: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
@@ -43,7 +43,6 @@ const variants: Variants = {
 
 export default function Page() {
   const emails = useQuery(api.waitlist.get);
-  const prefersReduced = useReducedMotion();
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[rgb(10,10,10)] text-white">
@@ -160,12 +159,6 @@ export default function Page() {
       </div>
     </main>
   );
-}
-
-async function sendEmail(email: string) {
-  await axios.post("/api/send-ticket", {
-    email,
-  });
 }
 
 function EmailCapture() {

@@ -10,7 +10,6 @@ export const addToWaitlist = mutation({
     return await ctx.db.insert("waitlist", {
       email: args.email,
       reference: args.reference ?? null,
-      createdAt: Date.now(),
     });
   },
 });

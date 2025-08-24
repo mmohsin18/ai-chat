@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, useReducedMotion, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Menu, Search, ChevronRight } from "lucide-react";
 // shadcn/ui
 import {
@@ -46,7 +46,6 @@ const COLORS = {
 
 
 export default function Page() {
-  const prefersReduced = useReducedMotion();
 
   return (
     <div

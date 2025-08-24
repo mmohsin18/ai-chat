@@ -8,12 +8,12 @@ type WaitlistStatProps = {
   className?: string;
 };
 
-/** Format 12000 -> 12k, 1_254_000 -> 1.25M */
-function formatCount(n: number) {
-  if (n < 1_000) return `${n}`;
-  if (n < 1_000_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}k`;
-  return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 2)}M`;
-}
+// /** Format 12000 -> 12k, 1_254_000 -> 1.25M */
+// function formatCount(n: number) {
+//   if (n < 1_000) return `${n}`;
+//   if (n < 1_000_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}k`;
+//   return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 2)}M`;
+// }
 
 /** Three fallback SVG avatars as data URIs (no external files needed). */
 const FALLBACKS = [
@@ -24,14 +24,13 @@ const FALLBACKS = [
 
 
 export default function WaitlistStat({
-  count,
   avatars,
   className = "",
 }: WaitlistStatProps) {
   const imgs = avatars?.length ? avatars.slice(0, 3) : FALLBACKS;
 
   // Props are read-only — compute a local safe value and clamp at 0
-  const safeCount = Math.max(0, count ?? 0);
+  // const safeCount = Math.max(0, count ?? 0);
 
   return (
     <div className="w-full items-center flex justify-center">
