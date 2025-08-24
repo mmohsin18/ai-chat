@@ -206,8 +206,10 @@ export default function ProfilePage() {
       toast.success("Profile updated");
       setEditing(false);
       router.refresh();
-    } catch (e: any) {
-      toast.error(e?.message ?? "Failed to update profile");
+    } catch (e: unknown) {
+      const message =
+        e instanceof Error ? e.message : "Failed to update profile";
+      toast.error(message);
     }
   }
 
