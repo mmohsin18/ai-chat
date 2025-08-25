@@ -43,8 +43,7 @@ export default function LoginForm() {
   }
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      // ensure the new session is visible to this route tree
+    if (!isLoading && isAuthenticated) {  
       router.replace("/profile");
       router.refresh();
     }
